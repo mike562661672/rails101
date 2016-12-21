@@ -7,6 +7,7 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
+    @posts = @group.posts.recent.paginate(:page => params[:page], :per_page => 5)
   end
 
   def new
@@ -49,7 +50,7 @@ class GroupsController < ApplicationController
      if current_user != @group.user
        redirect_to root_path, alert: "you have no permission"
      end
-    end 
+    end
   def group_params
     params.require(:group).permit(:title, :description)
   end
